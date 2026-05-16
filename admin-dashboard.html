@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KT Care | Admin Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">KT Care Pty Ltd &mdash; Admin Dashboard</div>
+  </div>
+
+  <div class="nav-wrap">
+    <nav class="container">
+      <a href="index.html" aria-label="KT Care home"><img src="assets/logo.png" alt="KT Care logo" class="logo"></a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="admin.html">User Management</a>
+        <a href="staff-portal.html">Staff Portal</a>
+        <span id="nav-user" class="nav-user"></span>
+        <button id="logout-btn" class="btn-nav-logout" style="display:none">Sign Out</button>
+      </div>
+    </nav>
+  </div>
+
+  <div id="loading-screen" class="auth-loading"><p>Loading&hellip;</p></div>
+  <div id="access-denied" class="auth-loading" style="display:none">
+    <div class="auth-card card" style="max-width:480px">
+      <h2>Access Denied</h2>
+      <p>This dashboard is available to administrators only.</p>
+      <a href="staff-portal.html" class="btn-primary">Go to Staff Portal</a>
+    </div>
+  </div>
+
+  <main class="container" id="dashboard-content" style="display:none">
+    <section>
+      <div class="portal-header">
+        <h1>Admin Dashboard</h1>
+        <p class="lead">Choose an admin area below.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="resources-grid">
+        <article class="resource-card card">
+          <div class="resource-icon">👥</div>
+          <h3>Manage Users</h3>
+          <p>Invite staff, assign roles, and remove access.</p>
+          <a href="admin.html" class="btn-resource">Open User Management</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">📚</div>
+          <h3>View Staff Portal</h3>
+          <p>Open the staff resources page as an administrator.</p>
+          <a href="staff-portal.html" class="btn-resource">Open Staff Portal</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">KT Care Pty Ltd | Support Worker Management Services | Nelson Bay NSW</div>
+  </footer>
+
+  <script>
+    const widget = window.netlifyIdentity;
+
+    widget.on("init", (user) => {
+      document.getElementById("loading-screen").style.display = "none";
+
+      if (!user) {
+        window.location.href = "/staff-login.html";
+        return;
+      }
+
+      const roles = user?.app_metadata?.roles || [];
+      const isAdmin = roles.includes("admin") || user?.app_metadata?.is_admin;
+      if (!isAdmin) {
+        document.getElementById("access-denied").style.display = "flex";
+        return;
+      }
+
+      document.getElementById("dashboard-content").style.display = "";
+      const name = user.user_metadata?.full_name || user.email;
+      document.getElementById("nav-user").textContent = name;
+      document.getElementById("logout-btn").style.display = "inline-block";
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      widget.logout();
+    });
+
+    widget.on("logout", () => {
+      window.location.href = "/staff-login.html";
+    });
+  </script>
+</body>
+</html>

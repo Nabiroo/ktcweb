@@ -38,10 +38,30 @@
   conditions = { Role = ["admin"] }
 
 [[redirects]]
+  from = "/admin-dashboard"
+  to = "/admin-dashboard.html"
+  status = 200
+  force = true
+  conditions = { Role = ["admin"] }
+
+[[redirects]]
+  from = "/admin-dashboard"
+  to = "/staff-login.html"
+  status = 401
+  force = true
+
+[[redirects]]
   from = "/admin"
   to = "/staff-login.html"
   status = 401
   force = true
+
+[[redirects]]
+  from = "/admin-dashboard.html"
+  to = "/admin-dashboard.html"
+  status = 200
+  force = true
+  conditions = { Role = ["admin"] }
 
 [[redirects]]
   from = "/admin.html"
@@ -56,6 +76,12 @@
   status = 401
   force = true
 
+[[redirects]]
+  from = "/admin-dashboard.html"
+  to = "/staff-login.html"
+  status = 401
+  force = true
+
 # Protect staff portal and admin pages — redirect to login if no valid JWT
 [[headers]]
   for = "/staff-portal.html"
@@ -65,6 +91,12 @@
 
 [[headers]]
   for = "/admin.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/admin-dashboard.html"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"

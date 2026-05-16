@@ -49,18 +49,24 @@
     const widget = window.netlifyIdentity;
     const hasIdentityCallback = /[?&#](invite_token|recovery_token|confirmation_token)=/i.test(window.location.href);
 
+    function postLoginRedirect(user) {
+      const roles = user?.app_metadata?.roles || [];
+      const isAdmin = roles.includes("admin") || user?.app_metadata?.is_admin;
+      window.location.href = isAdmin ? "/admin-dashboard.html" : "/staff-portal.html";
+    }
+
     if (hasIdentityCallback) {
       widget.handleAuthCallback();
     }
 
-    // On successful login redirect to staff portal
-    widget.on("login", () => {
-      window.location.href = "/staff-portal.html";
+    // On successful login redirect by role
+    widget.on("login", (user) => {
+      postLoginRedirect(user);
     });
 
-    // If already logged in, go straight to portal
+    // If already logged in, redirect by role
     widget.on("init", (user) => {
-      if (user) window.location.href = "/staff-portal.html";
+      if (user) postLoginRedirect(user);
     });
 
     document.getElementById("login-btn").addEventListener("click", () => {
