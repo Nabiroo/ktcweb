@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KT Care | Staff Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">KT Care Pty Ltd &mdash; Staff Portal</div>
+  </div>
+
+  <div class="nav-wrap">
+    <nav class="container">
+      <a href="index.html" aria-label="KT Care home"><img src="assets/logo.png" alt="KT Care logo" class="logo"></a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <span id="nav-user" class="nav-user"></span>
+        <button id="logout-btn" class="btn-nav-logout" style="display:none">Sign Out</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Shown while auth state is being determined -->
+  <div id="loading-screen" class="auth-loading">
+    <p>Loading&hellip;</p>
+  </div>
+
+  <main class="container" id="portal-content" style="display:none">
+    <section>
+      <div class="portal-header">
+        <h1>Welcome, <span id="user-name">Staff Member</span></h1>
+        <p class="lead">Your KT Care staff resources are below. Contact admin if you need access to additional materials.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Training Materials</h2>
+      <p class="section-note">Add links to your training documents here. You can link to Google Drive, SharePoint, or uploaded PDF files.</p>
+      <div class="resources-grid">
+        <!-- ── Add / edit training resource cards below ── -->
+        <article class="resource-card card">
+          <div class="resource-icon">📋</div>
+          <h3>Onboarding Guide</h3>
+          <p>New staff onboarding checklist and orientation materials.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">🛡️</div>
+          <h3>Work Health &amp; Safety</h3>
+          <p>WHS policies, incident reporting procedures, and safety guidelines.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">📚</div>
+          <h3>NDIS Training</h3>
+          <p>NDIS practice standards, worker orientation module, and compliance resources.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">💬</div>
+          <h3>Communication Skills</h3>
+          <p>Client communication guidelines and professional conduct standards.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Company Operating Manuals</h2>
+      <p class="section-note">Add links to your operating manuals here.</p>
+      <div class="resources-grid">
+        <!-- ── Add / edit manual cards below ── -->
+        <article class="resource-card card">
+          <div class="resource-icon">📖</div>
+          <h3>Operations Manual</h3>
+          <p>Day-to-day operational procedures and service delivery guidelines.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">⚖️</div>
+          <h3>Policies &amp; Procedures</h3>
+          <p>Company policies, code of conduct, and HR procedures.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">💰</div>
+          <h3>Payroll &amp; Entitlements</h3>
+          <p>Pay schedules, superannuation, leave entitlements, and tax information.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+        <article class="resource-card card">
+          <div class="resource-icon">🗂️</div>
+          <h3>Forms &amp; Templates</h3>
+          <p>Shift reports, incident forms, client consent templates, and more.</p>
+          <a href="#" class="btn-resource">Coming soon</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">KT Care Pty Ltd | Support Worker Management Services | Nelson Bay NSW</div>
+  </footer>
+
+  <script>
+    const widget = window.netlifyIdentity;
+
+    widget.on("init", (user) => {
+      document.getElementById("loading-screen").style.display = "none";
+
+      if (!user) {
+        // Not logged in — redirect to login page
+        window.location.href = "/staff-login.html";
+        return;
+      }
+
+      // Show portal and greet user
+      document.getElementById("portal-content").style.display = "";
+      const name = user.user_metadata?.full_name || user.email;
+      document.getElementById("user-name").textContent = name;
+      document.getElementById("nav-user").textContent = name;
+      document.getElementById("logout-btn").style.display = "inline-block";
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      widget.logout();
+    });
+
+    widget.on("logout", () => {
+      window.location.href = "/staff-login.html";
+    });
+  </script>
+</body>
+</html>

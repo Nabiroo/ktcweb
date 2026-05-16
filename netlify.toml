@@ -1,0 +1,24 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+# Protect staff portal and admin pages — redirect to login if no valid JWT
+[[headers]]
+  for = "/staff-portal.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"

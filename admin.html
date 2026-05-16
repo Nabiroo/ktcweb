@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KT Care | Admin Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">KT Care Pty Ltd &mdash; Admin Portal</div>
+  </div>
+
+  <div class="nav-wrap">
+    <nav class="container">
+      <a href="index.html" aria-label="KT Care home"><img src="assets/logo.png" alt="KT Care logo" class="logo"></a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="staff-portal.html">Staff Portal</a>
+        <span id="nav-user" class="nav-user"></span>
+        <button id="logout-btn" class="btn-nav-logout" style="display:none">Sign Out</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Auth loading / access denied states -->
+  <div id="loading-screen" class="auth-loading"><p>Loading&hellip;</p></div>
+  <div id="access-denied" class="auth-loading" style="display:none">
+    <div class="auth-card card" style="max-width:480px">
+      <h2>Access Denied</h2>
+      <p>This area is restricted to site administrators only.</p>
+      <a href="index.html" class="btn-primary">Return Home</a>
+    </div>
+  </div>
+
+  <main class="container" id="admin-content" style="display:none">
+    <section>
+      <h1>Admin Portal</h1>
+      <p class="lead">Manage staff user accounts. Invited users receive an email to set their password.</p>
+    </section>
+
+    <!-- Invite new user -->
+    <section>
+      <h2>Invite New Staff Member</h2>
+      <div class="admin-form card">
+        <form id="invite-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="invite-email">Email address</label>
+              <input id="invite-email" type="email" placeholder="staff@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="invite-role">Role</label>
+              <select id="invite-role">
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Send Invitation</button>
+          <p id="invite-msg" class="form-msg" style="display:none"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- User list -->
+    <section>
+      <h2>Registered Users</h2>
+      <div id="user-list-wrap">
+        <p id="users-loading">Loading users&hellip;</p>
+        <table id="user-table" class="user-table" style="display:none">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Confirmed</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="user-tbody"></tbody>
+        </table>
+        <p id="users-error" class="form-msg form-msg--error" style="display:none"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">KT Care Pty Ltd | Support Worker Management Services | Nelson Bay NSW</div>
+  </footer>
+
+  <script>
+    const widget = window.netlifyIdentity;
+    let currentToken = null;
+
+    // ── Auth gate ────────────────────────────────────────────────────────────
+    widget.on("init", async (user) => {
+      document.getElementById("loading-screen").style.display = "none";
+
+      if (!user) {
+        widget.open("login");
+        widget.on("login", (loggedIn) => checkAdmin(loggedIn));
+        return;
+      }
+      checkAdmin(user);
+    });
+
+    function checkAdmin(user) {
+      const roles = user?.app_metadata?.roles || [];
+      const isAdmin = roles.includes("admin") || user?.app_metadata?.is_admin;
+
+      if (!isAdmin) {
+        document.getElementById("access-denied").style.display = "flex";
+        return;
+      }
+
+      currentToken = user.token?.access_token;
+      document.getElementById("admin-content").style.display = "";
+      const name = user.user_metadata?.full_name || user.email;
+      document.getElementById("nav-user").textContent = name;
+      document.getElementById("logout-btn").style.display = "inline-block";
+      loadUsers();
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", () => widget.logout());
+    widget.on("logout", () => { window.location.href = "/staff-login.html"; });
+
+    // ── API helper ───────────────────────────────────────────────────────────
+    async function adminAPI(payload) {
+      // Refresh token in case it expired
+      const user = widget.currentUser();
+      if (user) {
+        await user.jwt(true).then((t) => { currentToken = t; }).catch(() => {});
+      }
+
+      const res = await fetch("/.netlify/functions/admin-users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      return res.json();
+    }
+
+    // ── Load user list ───────────────────────────────────────────────────────
+    async function loadUsers() {
+      const data = await adminAPI({ action: "list" });
+
+      document.getElementById("users-loading").style.display = "none";
+
+      if (data.error) {
+        const el = document.getElementById("users-error");
+        el.textContent = data.error;
+        el.style.display = "block";
+        return;
+      }
+
+      const users = data.users || [];
+      const tbody = document.getElementById("user-tbody");
+      tbody.innerHTML = "";
+
+      users.forEach((u) => {
+        const roles = u.app_metadata?.roles?.join(", ") || "staff";
+        const confirmed = u.confirmed_at ? "✓" : "Pending";
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escHtml(u.email)}</td>
+          <td>${escHtml(roles)}</td>
+          <td>${confirmed}</td>
+          <td>
+            <button class="btn-table-action btn-danger" onclick="deleteUser('${u.id}', '${escHtml(u.email)}')">Remove</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("user-table").style.display = users.length ? "" : "none";
+      if (!users.length) {
+        document.getElementById("users-loading").textContent = "No users found.";
+        document.getElementById("users-loading").style.display = "block";
+      }
+    }
+
+    // ── Invite user ──────────────────────────────────────────────────────────
+    document.getElementById("invite-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("invite-email").value.trim();
+      const role  = document.getElementById("invite-role").value;
+      const msg   = document.getElementById("invite-msg");
+
+      msg.className = "form-msg";
+      msg.textContent = "Sending invitation…";
+      msg.style.display = "block";
+
+      const data = await adminAPI({ action: "invite", email });
+
+      if (data.error) {
+        msg.className = "form-msg form-msg--error";
+        msg.textContent = `Error: ${data.error}`;
+        return;
+      }
+
+      // Set role after invite
+      if (role !== "staff") {
+        await adminAPI({ action: "set-role", userId: data.id, role });
+      }
+
+      msg.className = "form-msg form-msg--success";
+      msg.textContent = `Invitation sent to ${email}.`;
+      document.getElementById("invite-form").reset();
+      loadUsers();
+    });
+
+    // ── Delete user ──────────────────────────────────────────────────────────
+    async function deleteUser(userId, email) {
+      if (!confirm(`Remove ${email} from staff portal? This cannot be undone.`)) return;
+      const data = await adminAPI({ action: "delete", userId });
+      if (data.error) { alert(`Error: ${data.error}`); return; }
+      loadUsers();
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>

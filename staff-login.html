@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KT Care | Staff Login</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">KT Care Pty Ltd</div>
+  </div>
+
+  <div class="nav-wrap">
+    <nav class="container">
+      <a href="index.html" aria-label="KT Care home"><img src="assets/logo.png" alt="KT Care logo" class="logo"></a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="staff-login.html" class="active">Staff Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="container">
+    <section class="auth-section">
+      <div class="auth-card card">
+        <div class="auth-header">
+          <img src="assets/logo.png" alt="KT Care" class="auth-logo">
+          <h1>Staff Portal</h1>
+          <p class="lead">Sign in to access training materials and company resources.</p>
+        </div>
+        <div id="login-area">
+          <button id="login-btn" class="btn-primary btn-full">Sign In</button>
+        </div>
+        <p class="auth-note">Access is restricted to authorised KT Care staff only.<br>
+          Contact <a href="mailto:admin@ktcare.au">admin@ktcare.au</a> to request access.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">KT Care Pty Ltd | Support Worker Management Services | Nelson Bay NSW</div>
+  </footer>
+
+  <script>
+    const widget = window.netlifyIdentity;
+
+    // On successful login redirect to staff portal
+    widget.on("login", () => {
+      window.location.href = "/staff-portal.html";
+    });
+
+    // If already logged in, go straight to portal
+    widget.on("init", (user) => {
+      if (user) window.location.href = "/staff-portal.html";
+    });
+
+    document.getElementById("login-btn").addEventListener("click", () => {
+      widget.open("login");
+    });
+  </script>
+</body>
+</html>

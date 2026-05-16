@@ -242,13 +242,243 @@ footer {
   font-size: 0.95rem;
 }
 
+/* ── Nav extras ── */
+.nav-user {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-nav-logout {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.btn-nav-logout:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+/* ── Auth / login ── */
+.auth-section {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.auth-card {
+  width: min(100%, 440px);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.auth-header { margin-bottom: 2rem; }
+
+.auth-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  border: 2px solid var(--border);
+}
+
+.auth-note {
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  color: var(--muted);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.btn-primary:hover { opacity: 0.88; }
+
+.btn-full { width: 100%; text-align: center; }
+
+/* ── Staff portal ── */
+.portal-header {
+  padding: 1.5rem 0 0.5rem;
+}
+
+.section-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  font-style: italic;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.resource-card {
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.resource-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+.resource-card h3 { margin: 0; }
+
+.resource-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.btn-resource {
+  display: inline-block;
+  margin-top: 0.8rem;
+  background: #e8f0ec;
+  color: #184a37;
+  border: 1px solid #cde2d9;
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  align-self: flex-start;
+  transition: background 0.15s;
+}
+
+.btn-resource:hover { background: #d4e8de; }
+
+/* ── Admin portal ── */
+.admin-form {
+  padding: 1.4rem;
+  max-width: 700px;
+  margin-bottom: 0.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+select {
+  width: 100%;
+  border: 1px solid #cec4be;
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  background: #fff;
+}
+
+.form-msg {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.form-msg--success { color: var(--accent); font-weight: 600; }
+.form-msg--error   { color: #c0392b; font-weight: 600; }
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.user-table th {
+  text-align: left;
+  padding: 0.7rem 1rem;
+  background: var(--border);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.user-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.user-table tr:last-child td { border-bottom: none; }
+
+.btn-table-action {
+  border: none;
+  border-radius: 7px;
+  padding: 0.3rem 0.75rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #ffe8ef;
+  color: #c0392b;
+  border: 1px solid #fca5a5;
+}
+
+.btn-danger:hover { background: #fca5a5; }
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .hero-grid,
   .services-grid,
   .gallery,
   .faqs,
-  .contact {
+  .contact,
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
     grid-template-columns: 1fr;
   }
 
