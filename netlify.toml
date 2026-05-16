@@ -5,6 +5,32 @@
   directory = "netlify/functions"
 
 [[redirects]]
+  from = "/staff-portal"
+  to = "/staff-portal.html"
+  status = 200
+  force = true
+  conditions = { Role = ["staff", "admin"] }
+
+[[redirects]]
+  from = "/staff-portal"
+  to = "/staff-login.html"
+  status = 401
+  force = true
+
+[[redirects]]
+  from = "/staff-portal.html"
+  to = "/staff-portal.html"
+  status = 200
+  force = true
+  conditions = { Role = ["staff", "admin"] }
+
+[[redirects]]
+  from = "/staff-portal.html"
+  to = "/staff-login.html"
+  status = 401
+  force = true
+
+[[redirects]]
   from = "/admin"
   to = "/admin.html"
   status = 200
