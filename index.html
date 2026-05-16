@@ -6,6 +6,7 @@
   <title>KT Care | Support Worker Management</title>
   <meta name="description" content="Find and hire your preferred support worker while KT Care handles pay, super, tax, and entitlements.">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <div class="topbar">
@@ -46,5 +47,17 @@
   <footer>
     <div class="container">KT Care Pty Ltd | Support Worker Management Services | Nelson Bay NSW</div>
   </footer>
+
+  <script>
+    const widget = window.netlifyIdentity;
+    const hasIdentityCallback = /[?&#](invite_token|recovery_token|confirmation_token)=/i.test(window.location.href);
+
+    if (widget && hasIdentityCallback) {
+      widget.handleAuthCallback();
+      widget.on("login", () => {
+        window.location.href = "/staff-portal.html";
+      });
+    }
+  </script>
 </body>
 </html>
