@@ -4,6 +4,32 @@
 [functions]
   directory = "netlify/functions"
 
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+  force = true
+  conditions = { Role = ["admin"] }
+
+[[redirects]]
+  from = "/admin"
+  to = "/staff-login.html"
+  status = 401
+  force = true
+
+[[redirects]]
+  from = "/admin.html"
+  to = "/admin.html"
+  status = 200
+  force = true
+  conditions = { Role = ["admin"] }
+
+[[redirects]]
+  from = "/admin.html"
+  to = "/staff-login.html"
+  status = 401
+  force = true
+
 # Protect staff portal and admin pages — redirect to login if no valid JWT
 [[headers]]
   for = "/staff-portal.html"
