@@ -1,0 +1,259 @@
+:root {
+  --bg: #f4f1ef;
+  --surface: #ffffff;
+  --text: #1b1b1b;
+  --muted: #5a5a5a;
+  --accent: #174f3b;
+  --accent-2: #7d9b8f;
+  --border: #e8e3df;
+  --max: 1140px;
+  --radius: 18px;
+  --shadow: 0 12px 28px rgba(20, 20, 20, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top left, #fbf8f6 0%, #f2eeeb 50%, #ece7e2 100%);
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  border-radius: 14px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+}
+
+/* ── Top bar ── */
+.topbar {
+  font-size: 0.9rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.topbar .container {
+  padding: 0.6rem 0;
+}
+
+/* ── Nav ── */
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(244, 241, 239, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+}
+
+.logo {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd6d1;
+}
+
+.links {
+  display: flex;
+  gap: 1.2rem;
+  font-weight: 600;
+}
+
+.links a.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+/* ── Typography ── */
+h1, h2, h3 {
+  margin: 0 0 0.7rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.3rem); }
+
+.lead {
+  font-size: 1.05rem;
+  color: #2e2e2e;
+  max-width: 44ch;
+  margin-bottom: 1rem;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ── Pill ── */
+.pill {
+  display: inline-block;
+  background: #e8f0ec;
+  color: #184a37;
+  border: 1px solid #cde2d9;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.86rem;
+  margin-bottom: 0.8rem;
+}
+
+/* ── Sections ── */
+section {
+  padding: 1rem 0 2rem;
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 2.3rem 0 1.5rem;
+}
+
+.hero-grid {
+  display: grid;
+  gap: 1.6rem;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+}
+
+.hero-copy {
+  padding: 2rem;
+}
+
+.facts {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  display: grid;
+  gap: 0.4rem;
+}
+
+/* ── Services ── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.service {
+  padding: 1.2rem;
+}
+
+.service p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* ── FAQs ── */
+.faqs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.faq {
+  padding: 1.1rem;
+}
+
+.faq p {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+}
+
+/* ── Contact ── */
+.contact {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.contact-card,
+.contact-form {
+  padding: 1.2rem;
+}
+
+.contact-form form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+input, textarea {
+  width: 100%;
+  border: 1px solid #cec4be;
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  background: #fff;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.72rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  padding: 1.1rem 0 2.5rem;
+  font-size: 0.95rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero-grid,
+  .services-grid,
+  .gallery,
+  .faqs,
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .links {
+    gap: 0.8rem;
+    font-size: 0.95rem;
+  }
+}
