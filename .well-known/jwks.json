@@ -1,0 +1,13 @@
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "use": "sig",
+      "kid": "com-tesla-3p-key-1",
+      "alg": "ES256",
+      "crv": "P-256",
+      "x": "b_-7_8PwUZJ2gw8LW5fkq4LGY3R4Y8Px4zn_4A59s5Y",
+      "y": "xgyzBEsoHSuADc1C1_bOo-uk9Zg0974pS_1Ghzy_68Q"
+    }
+  ]
+}
